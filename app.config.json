@@ -1,0 +1,145 @@
+{
+  "slug": "water-utility-asset-compliance-suite",
+  "title": "Water Utility Asset Compliance Suite",
+  "buyer": "Water utilities, municipalities, public works teams",
+  "description": "Water utility asset management, inspections, work orders, regulatory sampling, outages, capital planning, and customer notices.",
+  "modules": [
+    {
+      "id": "assets",
+      "table": "assets",
+      "label": "Utility Assets",
+      "description": "Utility Assets workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "Pipes",
+        "Pumps",
+        "Meters"
+      ],
+      "prefix": "UA",
+      "seedValues": [
+        "Pipes",
+        "Pumps",
+        "Meters"
+      ]
+    },
+    {
+      "id": "inspections",
+      "table": "inspections",
+      "label": "Inspections",
+      "description": "Inspections workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "Valve exercise",
+        "Hydrant flow",
+        "Condition"
+      ],
+      "prefix": "I",
+      "seedValues": [
+        "Valve exercise",
+        "Hydrant flow",
+        "Condition"
+      ]
+    },
+    {
+      "id": "work-orders",
+      "table": "workOrders",
+      "label": "Work Orders",
+      "description": "Work Orders workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "Breaks",
+        "Leaks",
+        "Repairs"
+      ],
+      "prefix": "WO",
+      "seedValues": [
+        "Breaks",
+        "Leaks",
+        "Repairs"
+      ]
+    },
+    {
+      "id": "water-quality",
+      "table": "waterQuality",
+      "label": "Water Quality",
+      "description": "Water Quality workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "Sampling",
+        "Results",
+        "Exceedances"
+      ],
+      "prefix": "WQ",
+      "seedValues": [
+        "Sampling",
+        "Results",
+        "Exceedances"
+      ]
+    },
+    {
+      "id": "outages",
+      "table": "outages",
+      "label": "Outages",
+      "description": "Outages workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "Service interruption",
+        "Boil notice",
+        "Restoration"
+      ],
+      "prefix": "O",
+      "seedValues": [
+        "Service interruption",
+        "Boil notice",
+        "Restoration"
+      ]
+    },
+    {
+      "id": "capital-planning",
+      "table": "capitalPlanning",
+      "label": "Capital Planning",
+      "description": "Capital Planning workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "CIP projects",
+        "Risk score",
+        "Budget"
+      ],
+      "prefix": "CP",
+      "seedValues": [
+        "CIP projects",
+        "Risk score",
+        "Budget"
+      ]
+    },
+    {
+      "id": "customer-notices",
+      "table": "customerNotices",
+      "label": "Customer Notices",
+      "description": "Customer Notices workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "Mailers",
+        "Alerts",
+        "Compliance language"
+      ],
+      "prefix": "CN",
+      "seedValues": [
+        "Mailers",
+        "Alerts",
+        "Compliance language"
+      ]
+    },
+    {
+      "id": "regulatory",
+      "table": "regulatory",
+      "label": "Regulatory",
+      "description": "Regulatory workspace for Water Utility Asset Compliance Suite.",
+      "subfeatures": [
+        "EPA/state reports",
+        "Deadlines",
+        "Evidence"
+      ],
+      "prefix": "R",
+      "seedValues": [
+        "EPA/state reports",
+        "Deadlines",
+        "Evidence"
+      ]
+    }
+  ],
+  "port": 5619
+}

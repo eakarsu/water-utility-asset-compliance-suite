@@ -1,0 +1,14 @@
+{
+  "name": "water-utility-asset-compliance-suite",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Water utility asset management, inspections, work orders, regulatory sampling, outages, capital planning, and customer notices.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node scripts/smoke-test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
