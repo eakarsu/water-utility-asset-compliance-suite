@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const port = Number(process.env.SMOKE_PORT || 5999);
 const base = 'http://127.0.0.1:' + port;
-const child = spawn(process.execPath, ['server.js'], { cwd: process.cwd(), env: { ...process.env, PORT: String(port), HOST: '127.0.0.1' }, stdio: ['ignore', 'pipe', 'pipe'] });
+const child = spawn(process.execPath, ['server.js'], { cwd: process.cwd(), env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', OPENROUTER_API_KEY: '', OPENAI_API_KEY: '' }, stdio: ['ignore', 'pipe', 'pipe'] });
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 let token = '';
 async function req(path, options = {}) {
@@ -45,5 +45,20 @@ async function req(path, options = {}) {
     blocked = true;
   }
   if (!blocked) throw new Error('RBAC write block failed');
+
+  // wave4b: authenticated tasks, server search/filter, JSON export, domain AI fallback
+  const adminAgain = await req('/api/auth/login', { method: 'POST', body: JSON.stringify({ email: 'admin@' + slug + '.local', password: 'admin123' }) }); token = adminAgain.token;
+  const unauth = await fetch(base + '/api/table/tasks'); if (unauth.status !== 401) throw new Error('tasks unauthenticated not 401');
+  const task = await req('/api/table/tasks', { method: 'POST', body: JSON.stringify({ item: 'Wave4B Task', owner: 'QA', priority: 'High', status: 'Open', dueDate: '2026-06-07', value: 'Test', notes: 'wave4b' }) });
+  const taskUpd = await req('/api/table/tasks/' + encodeURIComponent(task.row.id), { method: 'PUT', body: JSON.stringify({ status: 'Complete', expectedVersion: task.row.version }) });
+  if (taskUpd.row.status !== 'Complete') throw new Error('tasks update failed');
+  const searched = await req('/api/table/' + table + '?q=Smoke&status=Complete');
+  if (!Array.isArray(searched.rows) || searched.total !== searched.rows.length) throw new Error('search/filter failed');
+  const jsonExp = await fetch(base + '/api/export/' + table + '?format=json', { headers: { Authorization: 'Bearer ' + token } });
+  const jsonBody = await jsonExp.json(); if (!jsonExp.ok || !Array.isArray(jsonBody.rows)) throw new Error('JSON export failed');
+  const feats = await req('/api/ai/domain'); if (!feats.features || feats.features.length < 2) throw new Error('domain AI features missing');
+  const aiRes = await req('/api/ai/domain/' + encodeURIComponent(feats.features[0].id), { method: 'POST', body: JSON.stringify({}) });
+  if (aiRes.aiGenerated !== false || aiRes.provider !== 'deterministic-fallback' || !aiRes.metrics || !('hasBlocked' in aiRes.metrics)) throw new Error('domain AI fallback labelling failed');
+  await req('/api/table/tasks/' + encodeURIComponent(task.row.id), { method: 'DELETE' });
   console.log('Smoke test passed for ' + slug);
 })().catch((err) => { console.error(err); process.exitCode = 1; }).finally(() => child.kill());
